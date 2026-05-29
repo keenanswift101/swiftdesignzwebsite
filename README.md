@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Swift Designz Website
 
-## Getting Started
+Official website for **Swift Designz Investments CC** — a Namibian software development and consultancy business.
 
-First, run the development server:
+**Live site:** [swiftdesignz.co.za](https://swiftdesignz.co.za)
+
+## Tech Stack
+
+- **Framework:** Next.js (App Router) + TypeScript
+- **Styling:** Tailwind CSS + custom glassmorphism/neon CSS
+- **Animations:** Framer Motion
+- **Email:** Resend API
+- **i18n:** next-intl (English + Afrikaans)
+- **Deployment:** Netlify (auto-deploy from GitHub)
+
+## Development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Scripts
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+# Auto-screenshot live portfolio sites into public/potfolio/
+node scripts/screenshot-portfolio.mjs
 
-## Learn More
+# Generate email signature PNG
+node scripts/generate-signature-keenan.mjs
 
-To learn more about Next.js, take a look at the following resources:
+# Export Facebook carousel slides as PNGs (requires dev server running)
+node scripts/export-fb-carousel.mjs
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Business Info
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Registered:** SWIFT DESIGNZ INVESTMENTS CC (CC/2026/055589)
+- **Owner:** Keenan Husselmann
+- **Contact:** info@swiftdesignz.co.za
+- **Phone (NAM):** +264 81 388 1111
+- **Phone (SA):** +27 76 255 7783

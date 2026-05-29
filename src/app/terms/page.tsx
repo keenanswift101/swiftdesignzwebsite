@@ -20,14 +20,15 @@ export default function TermsPage() {
           <div className="section-divider mb-10" />
 
           <div className="glass p-6 md:p-8 lg:p-12 rounded-2xl space-y-6 md:space-y-8 text-sm text-gray-400 leading-relaxed">
-            <p className="text-xs text-gray-600">Last updated: March 2026</p>
+            <p className="text-xs text-gray-600">Last updated: May 2026</p>
 
             <div>
               <h2 className="text-lg font-semibold text-white mb-3">1. Agreement</h2>
               <p>
                 By accessing and using the Swift Designz website (swiftdesignz.co.za) and engaging
-                our services, you agree to be bound by these Terms and Conditions. If you do not
-                agree, please do not use our website or services.
+                our services, you agree to be bound by these Terms and Conditions. These terms apply
+                to Swift Designz Investments CC (Registration No. CC/2026/055589), trading as Swift Designz.
+                If you do not agree, please do not use our website or services.
               </p>
             </div>
 
@@ -101,8 +102,10 @@ export default function TermsPage() {
             <div>
               <h2 className="text-lg font-semibold text-white mb-3">9. Governing Law</h2>
               <p>
-                These Terms and Conditions are governed by the laws of the Republic of South Africa.
-                Any disputes shall be resolved in the courts of South Africa.
+                These Terms and Conditions are governed by the laws of the Republic of Namibia.
+                Swift Designz Investments CC is a registered Namibian Close Corporation
+                (Registration No. CC/2026/055589). Any disputes shall be resolved in the competent
+                courts of Namibia.
               </p>
             </div>
 

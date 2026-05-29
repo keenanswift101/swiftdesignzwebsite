@@ -21,7 +21,7 @@ export default function CookiesPage() {
           <div className="section-divider mb-10" />
 
           <div className="glass p-6 md:p-8 lg:p-12 rounded-2xl space-y-6 md:space-y-8 text-sm text-gray-400 leading-relaxed">
-            <p className="text-xs text-gray-600">Last updated: March 2026</p>
+            <p className="text-xs text-gray-600">Last updated: May 2026</p>
 
             <div>
               <h2 className="text-lg font-semibold text-white mb-3">1. What Are Cookies?</h2>

@@ -1,12 +1,26 @@
 # Swift Designz Website - Project Tracker
 
 ## Project Overview
-- **Business:** Swift Designz - Freelance software development, web design, e-commerce, apps, PM training, AI training
+- **Business:** Swift Designz - Software development, web design, e-commerce, apps, PM training, AI training
+- **Legal Name:** SWIFT DESIGNZ INVESTMENTS CC
 - **Owner:** Keenan Husselmann
 - **Domain:** swiftdesignz.co.za (hosted by IT-Guru, South Africa)
 - **Emails:** info@swiftdesignz.co.za, keenan@swiftdesignz.co.za
 - **Phone:** NAM +264 81 388 1111 | SA +27 76 255 7783
 - **Deployment:** Netlify (auto-deploy from GitHub: KeenanHusselmann/swiftdesignzwebsite)
+
+## Legal & Registration
+- **Registered Name:** SWIFT DESIGNZ INVESTMENTS CC
+- **Registration Number:** CC/2026/055589
+- **Business Type:** Close Corporation (CC) - Namibia
+- **Principal Business:** Software Development and Consultancy
+- **Taxpayer ID (NamRA):** 16271273
+- **Tax Type:** ITX 16271273-011
+- **Registered Office:** ERF 55, Kenneth McArthur Street, Auas Blick, Windhoek, Namibia
+- **Postal Address:** P.O. Box 4655, Rehoboth, Namibia
+- **Financial Year End:** Last day of February each year
+- **Registration Effective:** 12 May 2026
+- **Tax Certificate Issued:** 29 May 2026 (Namibia Revenue Agency)
 
 ## Tech Stack
 - **Framework:** Next.js 16.2.4 (App Router) + TypeScript

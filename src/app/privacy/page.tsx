@@ -21,14 +21,15 @@ export default function PrivacyPage() {
           <div className="section-divider mb-10" />
 
           <div className="glass p-6 md:p-8 lg:p-12 rounded-2xl space-y-6 md:space-y-8 text-sm text-gray-400 leading-relaxed">
-            <p className="text-xs text-gray-600">Last updated: March 2026</p>
+            <p className="text-xs text-gray-600">Last updated: May 2026</p>
 
             <div>
               <h2 className="text-lg font-semibold text-white mb-3">1. Introduction</h2>
               <p>
-                Swift Designz (&quot;we&quot;, &quot;us&quot;, or &quot;our&quot;) respects your privacy and is committed to
-                protecting your personal data. This Privacy Policy explains how we collect, use, disclose,
-                and safeguard your information when you visit our website swiftdesignz.co.za.
+                Swift Designz Investments CC (Registration No. CC/2026/055589), trading as Swift Designz
+                (&quot;we&quot;, &quot;us&quot;, or &quot;our&quot;), respects your privacy and is committed to protecting your
+                personal data. This Privacy Policy explains how we collect, use, disclose, and safeguard
+                your information when you visit our website swiftdesignz.co.za.
               </p>
             </div>
 
