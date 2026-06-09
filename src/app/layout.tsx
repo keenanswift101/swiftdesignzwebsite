@@ -106,7 +106,7 @@ export const metadata: Metadata = {
     "mobile apps",
     "South Africa",
     "Swift Designz",
-    "freelance developer",
+    "software development company",
   ],
   authors: [{ name: "Swift Designz" }],
   icons: {
@@ -203,7 +203,7 @@ export default function RootLayout({
           fbq('track', 'PageView');
         `}</Script>
         <noscript dangerouslySetInnerHTML={{ __html: `<img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1731133011582846&ev=PageView&noscript=1"/>` }} />
-        {/* Service Worker — offline fallback when Netlify is unreachable */}
+        {/* Service Worker - offline fallback */}
         <Script id="sw-register" strategy="afterInteractive">{`
           if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/sw.js').catch(function(){});
