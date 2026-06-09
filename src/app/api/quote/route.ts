@@ -327,20 +327,6 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ success: true, confirmationSent: false });
     }
 
-    // Push lead to admin portal (fire-and-forget — don't block the response)
-    const adminLeadsUrl = process.env.ADMIN_LEADS_URL;
-    if (adminLeadsUrl) {
-      void fetch(adminLeadsUrl, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name, email, phone, company, location,
-          service, package: pkg, scope, timeline, budget,
-          message: notes, source: "quote_form",
-        }),
-      }).catch((err) => console.error("Admin lead push failed:", err));
-    }
-
     return NextResponse.json({ success: true, confirmationSent: true });
   } catch (error) {
     console.error("Quote form error:", error);

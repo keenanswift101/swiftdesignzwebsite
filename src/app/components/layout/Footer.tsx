@@ -4,7 +4,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { Mail, MapPin, ArrowUpRight, Phone, Facebook, Instagram } from "lucide-react";
 import { useI18n } from "@/i18n/I18nProvider";
-import NewsletterSignup from "@/app/components/ui/NewsletterSignup";
 
 const footerLinks = [
   {
@@ -148,13 +147,8 @@ export default function Footer() {
           ))}
         </div>
 
-        {/* Newsletter */}
-        <div className="mt-12 pt-10 border-t border-[rgba(48,176,176,0.07)] max-w-md">
-          <NewsletterSignup />
-        </div>
-
         {/* Bottom */}
-        <div className="mt-10 pt-8 border-t border-[rgba(48,176,176,0.05)] flex flex-col md:flex-row items-center justify-between gap-4">
+        <div className="mt-16 pt-8 border-t border-[rgba(48,176,176,0.05)] flex flex-col md:flex-row items-center justify-between gap-4">
           <p className="text-xs" style={{ color: "#b45309" }}>
             &copy; {new Date().getFullYear()} Swift Designz. {t("footer.rights")}
           </p>
