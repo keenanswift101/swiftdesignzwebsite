@@ -148,4 +148,14 @@
   - Removed ~31 marketing HTML files from public root
   - Consolidated all marketing images + videos into public/marketing/
   - Removed 38 one-off scripts; scripts/ now contains only 2 active tools
+- Phase 8: Business registration + infrastructure migration ✅
+  - Official registration: SWIFT DESIGNZ INVESTMENTS CC (CC/2026/055589, TIN 16271273)
+  - Legal pages updated with registered name, reg number, governing law corrected to Namibia
+  - "Freelance" references replaced with "registered company" in copy and SEO metadata
+  - GitHub repo transferred from KeenanHusselmann to keenanswift101
+  - Migrated from Netlify to Vercel: netlify.toml removed, @netlify/plugin-nextjs uninstalled
+  - Cache headers moved from netlify.toml into next.config.ts
+  - swiftdesignz.co.za DNS updated to Vercel at IT-Guru
+  - All env vars migrated to Vercel dashboard
+  - Production build clean: 18 pages, TypeScript passes, zero errors
 

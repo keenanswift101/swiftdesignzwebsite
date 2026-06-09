@@ -11,7 +11,7 @@ Official website for **Swift Designz Investments CC** — a Namibian software de
 - **Animations:** Framer Motion
 - **Email:** Resend API
 - **i18n:** next-intl (English + Afrikaans)
-- **Deployment:** Netlify (auto-deploy from GitHub)
+- **Deployment:** Vercel (auto-deploy from GitHub: keenanswift101/swiftdesignzwebsite)
 
 ## Development
 
