@@ -200,7 +200,7 @@ function SparkleTrail() {
 
     // Load logo image
     const logo = new Image();
-    logo.src = "/favicon.png";
+    logo.src = "/images/favicon.png";
 
     function refreshRects() {
       bounceRects = Array.from(
@@ -579,7 +579,7 @@ export default function SubscribePage() {
   return (
     <div className="min-h-screen bg-[#101010] flex items-center justify-center px-5 relative overflow-hidden">
       {/* Background audio — starts on first user interaction */}
-      <audio ref={audioRef} src="/Trap%20Paganini%20%233%20-%20Codec%20(128k).mp3" loop preload="auto" aria-hidden="true" className="hidden" />
+      <audio ref={audioRef} src="/ambient.mp3" loop preload="auto" aria-hidden="true" className="hidden" />
 
       {/* Sound on badge */}
       <AnimatePresence>{audioStarted && <SoundOnBadge key="snd" />}</AnimatePresence>
@@ -607,7 +607,7 @@ export default function SubscribePage() {
           transition={{ duration: 0.4, ease: "easeOut" }}
         >
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/favicon.png" alt="Swift Designz" width={30} height={30} className="rounded-lg" />
+          <img src="/images/logo.png" alt="Swift Designz" width={30} height={30} className="rounded-lg" />
           <span className="text-sm font-semibold text-white/60 tracking-tight">Swift Designz</span>
         </motion.div>
 
