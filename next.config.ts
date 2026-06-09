@@ -15,9 +15,19 @@ const SECURITY_HEADERS = [
   { key: "Strict-Transport-Security", value: "max-age=31536000; includeSubDomains" },
 ];
 
+const CACHE_HEADERS_IMMUTABLE = [
+  { key: "Cache-Control", value: "public, max-age=31536000, immutable" },
+];
+
 const nextConfig: NextConfig = {
   async headers() {
-    return [{ source: "/(.*)", headers: SECURITY_HEADERS }];
+    return [
+      { source: "/(.*)", headers: SECURITY_HEADERS },
+      { source: "/images/(.*)", headers: CACHE_HEADERS_IMMUTABLE },
+      { source: "/fonts/(.*)", headers: CACHE_HEADERS_IMMUTABLE },
+      { source: "/sitemap.xml", headers: [{ key: "Cache-Control", value: "public, max-age=3600" }] },
+      { source: "/robots.txt", headers: [{ key: "Cache-Control", value: "public, max-age=86400" }] },
+    ];
   },
   images: {
     qualities: [70, 75, 85, 90],

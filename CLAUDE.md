@@ -7,7 +7,7 @@
 - **Domain:** swiftdesignz.co.za (hosted by IT-Guru, South Africa)
 - **Emails:** info@swiftdesignz.co.za, keenan@swiftdesignz.co.za
 - **Phone:** NAM +264 81 388 1111 | SA +27 76 255 7783
-- **Deployment:** Netlify (auto-deploy from GitHub: KeenanHusselmann/swiftdesignzwebsite)
+- **Deployment:** Vercel (auto-deploy from GitHub: keenanswift101/swiftdesignzwebsite)
 
 ## Legal & Registration
 - **Registered Name:** SWIFT DESIGNZ INVESTMENTS CC
