@@ -109,6 +109,8 @@
 ## Scripts & Tools
 - `scripts/screenshot-portfolio.mjs` — Puppeteer script to auto-screenshot live portfolio sites into `public/potfolio/`
 - `scripts/generate-signature-keenan.mjs` — Generates email signature PNG (`public/images/signature-keenan.png`)
+- `scripts/export-fb-carousel.mjs` — Exports FB carousel HTML slides as PNGs into `public/marketing/` (requires dev server)
+- `scripts/record-posts.js` — Playwright video recorder for social media HTML posts (frame-perfect, pipes to ffmpeg)
 
 ## Assets
 - `public/images/` — App images (logo, favicon, headshot, signatures) used by Next.js
