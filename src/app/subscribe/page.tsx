@@ -192,8 +192,8 @@ function SparkleTrail() {
     const s = {
       x:   canvas.width  * 0.3,
       y:   canvas.height * 0.35,
-      vx:  2.4,
-      vy:  1.9,
+      vx:  4.2,
+      vy:  3.5,
       rot: 0,
       trail: [] as Array<{ x: number; y: number; rot: number }>,
     };
@@ -502,9 +502,13 @@ export default function SubscribePage() {
     if (!audio) return;
     connectedRef.current = true;
     try {
+      // Kick play() immediately while still inside the user gesture — Android requires this
+      audio.volume = 0.4;
+      const playPromise = audio.play();
+
+      // Set up AudioContext after triggering play (safe to await now)
       const Ctx = window.AudioContext ?? (window as unknown as Record<string, typeof AudioContext>).webkitAudioContext;
       const ctx = new Ctx();
-      // Android starts AudioContext suspended — must resume inside user gesture
       if (ctx.state === "suspended") await ctx.resume();
 
       const analyser = ctx.createAnalyser();
@@ -515,8 +519,8 @@ export default function SubscribePage() {
       analyser.connect(ctx.destination);
       audioCtxRef.current = ctx;
       analyserRef.current = analyser;
-      audio.volume = 0.4;
-      await audio.play(); // await — badge only shows if play() succeeds
+
+      await playPromise; // confirm play succeeded before showing badge
       setAudioStarted(true);
 
       const data  = new Uint8Array(analyser.frequencyBinCount);
@@ -538,9 +542,10 @@ export default function SubscribePage() {
 
   useEffect(() => {
     const trigger = () => { void startAudio(); };
-    window.addEventListener("click",      trigger, { once: true });
-    window.addEventListener("touchstart", trigger, { once: true, passive: true });
-    window.addEventListener("keydown",    trigger, { once: true });
+    // Use persistent listeners so a failed first tap can retry
+    window.addEventListener("click",      trigger, { passive: true });
+    window.addEventListener("touchstart", trigger, { passive: true });
+    window.addEventListener("keydown",    trigger);
     return () => {
       window.removeEventListener("click",      trigger);
       window.removeEventListener("touchstart", trigger);
@@ -599,18 +604,6 @@ export default function SubscribePage() {
       />
 
       <div className="relative z-10 w-full max-w-105">
-        {/* Logo */}
-        <motion.div
-          className="flex items-center justify-center gap-2.5 mb-10"
-          initial={{ opacity: 0, y: -12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
-        >
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/logo.png" alt="Swift Designz" width={30} height={30} className="rounded-lg" />
-          <span className="text-sm font-semibold text-white/60 tracking-tight">Swift Designz</span>
-        </motion.div>
-
         <AnimatePresence mode="wait">
           {status === "success" ? (
             /* ─── Success ─── */
@@ -650,9 +643,7 @@ export default function SubscribePage() {
 
 
               <motion.a
-                href="https://www.swiftdesignz.co.za/contact"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="/contact"
                 className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#30B0B0] text-white text-sm font-semibold hover:bg-[#30B0B0]/80 transition-colors cursor-pointer"
                 initial={{ opacity: 0, y: 8 }}
                 animate={{ opacity: 1, y: 0 }}
