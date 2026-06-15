@@ -67,7 +67,7 @@ const projects: Project[] = [
     description:
       "A purpose-driven website for a Namibian non-profit focused on sustainable community development, empowering the people of Rehoboth through impactful programmes since 2003.",
     image: "/potfolio/rhb-community-trust-portfolio-thumbnail.png",
-    link: "https://rehotrust.netlify.app",
+    link: "https://rehotrust.org",
     tags: ["Non-Profit", "Custom Design", "Responsive"],
   },
   // --- E-Commerce ---

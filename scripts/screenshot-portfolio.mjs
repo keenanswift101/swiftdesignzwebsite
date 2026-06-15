@@ -31,7 +31,7 @@ const sites = [
   },
   {
     name: "rhb-community-trust",
-    url: "https://rehotrust.netlify.app",
+    url: "https://rehotrust.org",
     waitFor: 4000,
   },
 ];

@@ -64,7 +64,7 @@
 - DUNMORE Training & Skills Development → https://dunmore.co.za
 - IA Academy - Neurodivergent School → https://ia-academy.org
 - IT-Guru Online → https://it-guru.online
-- Rehoboth Community Trust → https://rehotrust.netlify.app
+- Rehoboth Community Trust → https://rehotrust.org
 
 ### E-Commerce
 - Ruby's Faith Jewellery Store (custom design, product catalogue)
