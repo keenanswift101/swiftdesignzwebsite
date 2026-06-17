@@ -208,6 +208,26 @@ export async function POST(req: NextRequest) {
       throw new Error(notifyError.message ?? "Failed to send notification email");
     }
 
+    // Fire-and-forget lead capture to admin portal
+    fetch("https://admin.swiftdesignz.co.za/api/leads", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        source:   "quote_form",
+        name,
+        email,
+        phone:    phone    || null,
+        company:  company  || null,
+        location: location || null,
+        service:  serviceLabel || null,
+        package:  pkg      || null,
+        scope:    scope    || null,
+        timeline: timeline || null,
+        budget:   budget   || null,
+        message:  notes    || null,
+      }),
+    }).catch(() => {});
+
     // Confirmation to client
     const pkgLabel = getPackageLabel(service, pkg);
     const { error: confirmError } = await resend.emails.send({
