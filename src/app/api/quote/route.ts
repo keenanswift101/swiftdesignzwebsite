@@ -69,10 +69,12 @@ export async function POST(req: NextRequest) {
     const serviceLabel = SERVICE_LABELS[service] ?? "General Enquiry";
 
     // ── Arrays: cap item count and per-item length ────────────────────────────
-    const featureArr  = strArr(raw.features, 20, 80);
-    const lookFeelArr = strArr(raw.lookFeel, 10, 50);
-    const themesArr   = strArr(raw.themes, 10, 50);
-    const keywordsArr = strArr(raw.keywords, 20, 50);
+    const featureArr     = strArr(raw.features, 20, 80);
+    const lookFeelArr    = strArr(raw.lookFeel, 10, 50);
+    const themesArr      = strArr(raw.themes, 10, 50);
+    const keywordsArr    = strArr(raw.keywords, 20, 50);
+    const HEX_COLOR_RE = /^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/;
+    const brandColorsArr = strArr(raw.brandColors, 8, 10).filter((c) => HEX_COLOR_RE.test(c));
 
     const makeTagList = (arr: string[]) => arr.length > 0
       ? arr.map((t) => `<span style="display:inline-block;margin:2px 3px;padding:3px 10px;border-radius:20px;font-size:11px;background:rgba(48,176,176,0.12);border:1px solid rgba(48,176,176,0.25);color:#30B0B0;">${escapeHtml(t)}</span>`).join("")
@@ -174,6 +176,13 @@ export async function POST(req: NextRequest) {
             ${makeTagList(themesArr)}
           </div>` : ""}
 
+          ${brandColorsArr.length > 0 ? `
+          <h3 style="color:#30B0B0;font-size:12px;text-transform:uppercase;letter-spacing:2px;margin:0 0 10px;">Brand Colours</h3>
+          <div style="margin-bottom:28px;padding:14px 18px;background:rgba(48,176,176,0.05);border-radius:8px;border:1px solid rgba(48,176,176,0.1);display:flex;flex-wrap:wrap;gap:8px;align-items:center;">
+            ${brandColorsArr.length >= 2 ? `<div style="width:56px;height:22px;border-radius:20px;border:1px solid rgba(255,255,255,0.1);background:linear-gradient(to right,${escapeHtml(brandColorsArr[0])} 50%,${escapeHtml(brandColorsArr[1])} 50%);flex-shrink:0;"></div>` : ""}
+            ${brandColorsArr.map((c) => `<span style="display:inline-flex;align-items:center;gap:6px;padding:4px 10px 4px 6px;border-radius:20px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);font-size:11px;color:#ccc;font-family:monospace;"><span style="width:14px;height:14px;border-radius:50%;background:${escapeHtml(c)};display:inline-block;border:1px solid rgba(255,255,255,0.15);flex-shrink:0;"></span>${escapeHtml(c)}</span>`).join("")}
+          </div>` : ""}
+
           ${keywordsArr.length > 0 ? `
           <h3 style="color:#30B0B0;font-size:12px;text-transform:uppercase;letter-spacing:2px;margin:0 0 10px;">Brand / Vibe Keywords</h3>
           <div style="margin-bottom:28px;padding:14px 18px;background:rgba(48,176,176,0.05);border-radius:8px;border:1px solid rgba(48,176,176,0.1);">
@@ -213,18 +222,19 @@ export async function POST(req: NextRequest) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        source:   "quote_form",
+        source:       "quote_form",
         name,
         email,
-        phone:    phone    || null,
-        company:  company  || null,
-        location: location || null,
-        service:  serviceLabel || null,
-        package:  pkg      || null,
-        scope:    scope    || null,
-        timeline: timeline || null,
-        budget:   budget   || null,
-        message:  notes    || null,
+        phone:        phone    || null,
+        company:      company  || null,
+        location:     location || null,
+        service:      serviceLabel || null,
+        package:      pkg      || null,
+        scope:        scope    || null,
+        timeline:     timeline || null,
+        budget:       budget   || null,
+        message:      notes    || null,
+        brand_colors: brandColorsArr.length > 0 ? brandColorsArr : null,
       }),
     }).catch(() => {});
 
@@ -272,12 +282,17 @@ export async function POST(req: NextRequest) {
               </tbody>
             </table>
 
-            ${(lookFeelArr.length > 0 || themesArr.length > 0 || keywordsArr.length > 0) ? `
+            ${(lookFeelArr.length > 0 || themesArr.length > 0 || keywordsArr.length > 0 || brandColorsArr.length > 0) ? `
             <h3 style="color:#30B0B0;font-size:12px;text-transform:uppercase;letter-spacing:2px;margin:0 0 12px;">Design Preferences</h3>
             <div style="margin-bottom:28px;padding:16px 18px;background:rgba(48,176,176,0.04);border-radius:8px;border:1px solid rgba(48,176,176,0.1);">
               ${lookFeelArr.length > 0 ? `<div style="margin-bottom:8px;"><span style="color:#666;font-size:10px;text-transform:uppercase;letter-spacing:1px;margin-right:8px;">Look &amp; Feel:</span>${makeTagList(lookFeelArr)}</div>` : ""}
               ${themesArr.length > 0 ? `<div style="margin-bottom:8px;"><span style="color:#666;font-size:10px;text-transform:uppercase;letter-spacing:1px;margin-right:8px;">Colours:</span>${makeTagList(themesArr)}</div>` : ""}
-              ${keywordsArr.length > 0 ? `<div><span style="color:#666;font-size:10px;text-transform:uppercase;letter-spacing:1px;margin-right:8px;">Brand Vibe:</span>${makeTagList(keywordsArr)}</div>` : ""}
+              ${keywordsArr.length > 0 ? `<div style="margin-bottom:8px;"><span style="color:#666;font-size:10px;text-transform:uppercase;letter-spacing:1px;margin-right:8px;">Brand Vibe:</span>${makeTagList(keywordsArr)}</div>` : ""}
+              ${brandColorsArr.length > 0 ? `<div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px;">
+                <span style="color:#666;font-size:10px;text-transform:uppercase;letter-spacing:1px;margin-right:4px;">Brand Colours:</span>
+                ${brandColorsArr.length >= 2 ? `<span style="display:inline-block;width:52px;height:20px;border-radius:20px;border:1px solid rgba(255,255,255,0.1);background:linear-gradient(to right,${escapeHtml(brandColorsArr[0])} 50%,${escapeHtml(brandColorsArr[1])} 50%);vertical-align:middle;"></span>` : ""}
+                ${brandColorsArr.map((c) => `<span style="display:inline-flex;align-items:center;gap:5px;padding:3px 9px 3px 5px;border-radius:20px;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);font-size:11px;color:#ccc;font-family:monospace;"><span style="width:12px;height:12px;border-radius:50%;background:${escapeHtml(c)};display:inline-block;border:1px solid rgba(255,255,255,0.15);flex-shrink:0;"></span>${escapeHtml(c)}</span>`).join("")}
+              </div>` : ""}
             </div>` : ""}
 
             <!-- Project Description -->

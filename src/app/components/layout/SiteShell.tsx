@@ -9,6 +9,7 @@ import SplashScreen from "@/app/components/ui/SplashScreen";
 import FunButton from "@/app/components/fun/FunButton";
 import TetrisButton from "@/app/components/fun/TetrisButton";
 import ClickTracker from "@/app/components/ui/ClickTracker";
+import ScrollToTop from "@/app/components/ui/ScrollToTop";
 
 /** Pages that should render without the global site chrome (nav/footer/effects). */
 const STANDALONE_ROUTES = ["/links"];
@@ -43,6 +44,7 @@ export default function SiteShell({
       <FunButton />
       <TetrisButton />
       <ClickTracker />
+      <ScrollToTop />
     </>
   );
 }

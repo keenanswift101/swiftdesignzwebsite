@@ -77,7 +77,7 @@ export default function Navbar() {
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden md:flex items-center gap-1">
+          <div className="hidden xl:flex items-center gap-1">
             {navKeys.map((link) => (
               <Link key={link.href} href={link.href}>
                 <motion.span
@@ -114,7 +114,7 @@ export default function Navbar() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMobileOpen(!mobileOpen)}
-            className="md:hidden relative z-10 p-2"
+            className="xl:hidden relative z-10 p-2"
             aria-label="Toggle menu"
           >
             {mobileOpen ? (

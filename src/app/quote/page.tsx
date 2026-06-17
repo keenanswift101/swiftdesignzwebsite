@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
+import PhoneInput from "@/app/components/ui/PhoneInput";
 import { motion, AnimatePresence } from "framer-motion";
 import { buildPlan, Phase } from "@/lib/quoteUtils";
 import { useI18n } from "@/i18n/I18nProvider";
@@ -59,6 +60,10 @@ const FEATURES: Record<ServiceId, string[]> = {
     "SEO Optimisation", "Blog / News Section", "Portfolio / Gallery", "Contact Form",
     "Newsletter Integration", "Social Media Links", "Analytics Integration",
     "Live Chat Widget", "Google Maps Embed", "Custom Logo Design",
+    "WhatsApp Chat Button", "Booking / Appointment System", "FAQ Section",
+    "Testimonials Section", "Team / Staff Page", "Events Calendar",
+    "Video Background / Hero", "Dark / Light Mode Toggle", "Password Protected Pages",
+    "Multilingual Support", "Cookie Consent Banner", "Pop-up / Lead Capture",
   ],
   ecommerce: [
     "PayFast Payment Gateway", "Stripe Payment Gateway", "Inventory Management",
@@ -133,6 +138,7 @@ const TIMELINE_OPTIONS = [
 const SOURCE_OPTIONS = [
   "Google Search",
   "Social Media (Instagram / Facebook)",
+  "WhatsApp",
   "LinkedIn",
   "Referral from someone I know",
   "Saw your portfolio",
@@ -155,6 +161,7 @@ interface FormState {
   name: string; email: string; phone: string; company: string; location: string;
   service: ServiceId | ""; package: string;
   features: string[]; lookFeel: string[]; themes: string[]; keywords: string[];
+  brandColors: string[];
   scope: string; timeline: string; contentReady: string; referenceUrls: string;
   attendees: string; experienceLevel: string;
   budget: string; notes: string; source: string;
@@ -163,18 +170,57 @@ interface FormState {
 const INITIAL: FormState = {
   name: "", email: "", phone: "", company: "", location: "",
   service: "", package: "",
-  features: [], lookFeel: [], themes: [], keywords: [],
+  features: [], lookFeel: [], themes: [], keywords: [], brandColors: [],
   scope: "", timeline: "", contentReady: "", referenceUrls: "",
   attendees: "", experienceLevel: "",
   budget: "", notes: "", source: "",
 };
 
-const DESCRIPTION_PLACEHOLDER: Record<ServiceId, string> = {
-  website:      "What kind of website do you need? What is the goal? Who is your audience? Any specific pages or features in mind?",
-  ecommerce:    "Tell us about your store. What are you selling? Do you have existing branding? How many products do you plan to list?",
-  app:          "What problem does your app solve? Who will use it? What core features must it have? Do you need iOS, Android, or web?",
-  "ai-training": "What are your AI learning goals? What tools does your team currently use? What outcomes do you want from this training?",
-  "pm-training": "What project management challenges do you face? What methodology are you using? What do you want your team to learn?",
+const DESCRIPTION_QUESTIONS: Record<ServiceId, string[]> = {
+  website: [
+    "What kind of website do you need? (business site, portfolio, landing page, etc.)",
+    "What is the main goal of the site? (leads, sales, awareness, bookings?)",
+    "Who is your target audience?",
+    "Do you have a domain name already?",
+    "Do you have existing branding - logo, colours, fonts?",
+    "Any specific pages or sections you want included?",
+    "Do you need the site in multiple languages?",
+    "Are there any websites you like the look of?",
+  ],
+  ecommerce: [
+    "What are you selling? (physical products, digital downloads, services?)",
+    "How many products do you plan to list?",
+    "Do you have existing product photos and descriptions?",
+    "Which payment methods do you want to accept?",
+    "Do you need delivery or shipping integrations?",
+    "Do you need customer accounts and order tracking?",
+    "Any special requirements? (bulk orders, subscriptions, coupons?)",
+  ],
+  app: [
+    "What problem does your app solve?",
+    "Who is the target user?",
+    "What are the core features the app must have?",
+    "Do you need iOS, Android, or a web app?",
+    "Do you need user accounts and authentication?",
+    "Do you have wireframes or mockups already?",
+    "Do you have an existing backend or API?",
+  ],
+  "ai-training": [
+    "What are your AI learning goals?",
+    "What tools does your team currently use?",
+    "What is your team's current skill level with AI?",
+    "How many people will be attending?",
+    "Do you want a once-off session or ongoing training?",
+    "What outcomes do you want from this training?",
+  ],
+  "pm-training": [
+    "What project management challenges do you face?",
+    "What methodology is your team currently using?",
+    "What do you want your team to learn or improve?",
+    "How many people will be attending?",
+    "Do you want a once-off session or ongoing coaching?",
+    "Are you preparing for any certifications? (PMP, PRINCE2, etc.)",
+  ],
 };
 
 // ─── COMPONENT ───────────────────────────────────────────────────────────────
@@ -211,6 +257,13 @@ export default function QuotePage() {
   const toggleKeyword = (f: string) =>
     set("keywords", form.keywords.includes(f) ? form.keywords.filter((x) => x !== f) : [...form.keywords, f]);
 
+  const [pickerColor, setPickerColor] = useState("#30B0B0");
+  const addBrandColor = (color: string) => {
+    if (!form.brandColors.includes(color)) set("brandColors", [...form.brandColors, color]);
+  };
+  const removeBrandColor = (color: string) =>
+    set("brandColors", form.brandColors.filter((c) => c !== color));
+
   const canNext = () => {
     if (step === 1) return form.name.trim() !== "" && form.email.trim() !== "";
     if (step === 2) return form.service !== "" && form.package !== "";
@@ -240,7 +293,9 @@ export default function QuotePage() {
       const data = await res.json();
       setConfirmationSent(data.confirmationSent !== false);
       setStatus("success");
-      setQuoteRef(`SD-${new Date().getFullYear()}-${Math.floor(100000 + Math.random() * 900000)}`);
+      const yr = String(new Date().getFullYear()).slice(2);
+      const seq = String(Math.floor(1 + Math.random() * 999)).padStart(3, "0");
+      setQuoteRef(`SD${yr}-Q-${seq}`);
     } catch (err) {
       setStatus("error");
       setErrorMsg(err instanceof Error ? err.message : "Something went sideways on our end. Give it another shot!");
@@ -407,7 +462,7 @@ export default function QuotePage() {
                           </div>
                           <div>
                             <label className={labelCls}>{t("quotePage.labelPhone")}</label>
-                            <input type="tel" placeholder="+" value={form.phone} onChange={(e) => set("phone", e.target.value)} className={inputCls} style={inputStyle} />
+                            <PhoneInput value={form.phone} onChange={(v) => set("phone", v)} className={inputCls} style={inputStyle} />
                           </div>
                           <div>
                             <label className={labelCls}>{t("quotePage.labelCompany")}</label>
@@ -480,7 +535,7 @@ export default function QuotePage() {
                           <label className={labelCls}>{t("quotePage.labelScope")}</label>
                           <textarea
                             rows={4}
-                            placeholder={currentService ? DESCRIPTION_PLACEHOLDER[currentService] : t("quotePage.phNotes")}
+                            placeholder="Describe your project in your own words..."
                             value={form.scope}
                             onChange={(e) => set("scope", e.target.value)}
                             className={inputCls + " resize-none"}
@@ -488,6 +543,19 @@ export default function QuotePage() {
                           />
                           {form.scope.trim().length > 0 && form.scope.trim().length < 10 && (
                             <p className="text-xs text-amber-500 mt-1.5">{t("quotePage.validShort")}</p>
+                          )}
+                          {currentService && (
+                            <div className="mt-2.5 px-3.5 py-3 rounded-lg" style={{ background: "rgba(48,176,176,0.03)", border: "1px solid rgba(48,176,176,0.1)" }}>
+                              <p className="text-[10px] text-gray-500 uppercase tracking-wider mb-2">Answer these to help us understand your project:</p>
+                              <ul className="space-y-1.5">
+                                {DESCRIPTION_QUESTIONS[currentService].map((q, i) => (
+                                  <li key={i} className="flex items-start gap-2 text-[12px] text-gray-400 leading-snug">
+                                    <span className="text-[var(--swift-teal)] flex-shrink-0 font-bold">-</span>
+                                    {q}
+                                  </li>
+                                ))}
+                              </ul>
+                            </div>
                           )}
                         </div>
                         {currentService && (
@@ -530,7 +598,7 @@ export default function QuotePage() {
                             </div>
                             <div className="mb-5">
                               <label className={labelCls}>{t("quotePage.labelTheme")}</label>
-                              <div className="flex flex-wrap gap-2">
+                              <div className="flex flex-wrap gap-2 mb-4">
                                 {THEMES.map((f) => (
                                   <button key={f} type="button" onClick={() => toggleTheme(f)}
                                     className={"px-3 py-1.5 rounded-full text-[12px] font-medium transition-all border " + (
@@ -539,6 +607,65 @@ export default function QuotePage() {
                                         : "border-white/10 bg-white/[0.02] text-gray-400 hover:border-[rgba(48,176,176,0.3)]"
                                     )}>{f}</button>
                                 ))}
+                              </div>
+                              {/* Custom brand colour picker */}
+                              <div className="mt-1 px-4 py-3.5 rounded-xl" style={{ background: "rgba(16,16,16,0.5)", border: "1px solid rgba(48,176,176,0.12)" }}>
+                                <p className="text-[10px] text-gray-500 uppercase tracking-wider mb-3">Custom Brand Colours</p>
+                                <div className="flex items-center gap-3 mb-3">
+                                  <input
+                                    type="color"
+                                    value={pickerColor}
+                                    onChange={(e) => setPickerColor(e.target.value)}
+                                    className="w-10 h-10 rounded-lg cursor-pointer border-0 bg-transparent flex-shrink-0"
+                                    style={{ padding: "2px" }}
+                                    title="Pick a colour"
+                                  />
+                                  <button
+                                    type="button"
+                                    onClick={() => addBrandColor(pickerColor)}
+                                    className="px-3.5 py-2 rounded-lg text-xs border border-white/10 bg-white/[0.02] text-gray-400 hover:border-[rgba(48,176,176,0.35)] hover:text-[var(--swift-teal)] transition-all"
+                                  >
+                                    + Add Colour
+                                  </button>
+                                  <span className="text-[11px] text-gray-600 font-mono">{pickerColor}</span>
+                                </div>
+                                {form.brandColors.length > 0 && (
+                                  <div className="flex flex-wrap gap-2 mb-3">
+                                    {form.brandColors.map((color) => (
+                                      <div
+                                        key={color}
+                                        className="flex items-center gap-1.5 pl-2 pr-2.5 py-1.5 rounded-full border border-white/10 text-[11px]"
+                                        style={{ background: `${color}18` }}
+                                      >
+                                        <div className="w-3 h-3 rounded-full flex-shrink-0 border border-white/10" style={{ background: color }} />
+                                        <span className="text-gray-300 font-mono">{color}</span>
+                                        <button
+                                          type="button"
+                                          onClick={() => removeBrandColor(color)}
+                                          className="text-gray-600 hover:text-red-400 ml-0.5 leading-none text-xs transition-colors"
+                                          title="Remove"
+                                        >x</button>
+                                      </div>
+                                    ))}
+                                  </div>
+                                )}
+                                {form.brandColors.length >= 2 && (
+                                  <div>
+                                    <p className="text-[10px] text-gray-600 uppercase tracking-wider mb-2">Colour Preview</p>
+                                    <div className="flex flex-wrap gap-2">
+                                      {form.brandColors.flatMap((c1, i) =>
+                                        form.brandColors.slice(i + 1).map((c2) => (
+                                          <div
+                                            key={`${c1}-${c2}`}
+                                            className="w-24 h-7 rounded-full border border-white/10 flex-shrink-0"
+                                            style={{ background: `linear-gradient(to right, ${c1} 50%, ${c2} 50%)` }}
+                                            title={`${c1} + ${c2}`}
+                                          />
+                                        ))
+                                      )}
+                                    </div>
+                                  </div>
+                                )}
                               </div>
                             </div>
                             <div className="mb-5">
@@ -643,6 +770,26 @@ export default function QuotePage() {
                             <div className="border-t border-white/5 pt-2 mt-2">
                               <span className="text-gray-500 uppercase text-[10px] tracking-wider">{t("quotePage.summaryTheme")}</span>
                               <p className="text-[var(--swift-teal)] text-xs mt-1 leading-relaxed">{form.themes.join(" · ")}</p>
+                            </div>
+                          )}
+                          {form.brandColors.length > 0 && (
+                            <div className="border-t border-white/5 pt-2 mt-2">
+                              <span className="text-gray-500 uppercase text-[10px] tracking-wider">Brand Colours</span>
+                              <div className="flex flex-wrap gap-2 mt-1.5">
+                                {form.brandColors.length >= 2 && (
+                                  <div
+                                    className="w-14 h-5 rounded-full border border-white/10 flex-shrink-0"
+                                    style={{ background: `linear-gradient(to right, ${form.brandColors[0]} 50%, ${form.brandColors[1]} 50%)` }}
+                                    title="Brand colour combo"
+                                  />
+                                )}
+                                {form.brandColors.map((c) => (
+                                  <div key={c} className="flex items-center gap-1.5">
+                                    <div className="w-4 h-4 rounded-full border border-white/15 flex-shrink-0" style={{ background: c }} />
+                                    <span className="text-[var(--swift-teal)] text-[11px] font-mono">{c}</span>
+                                  </div>
+                                ))}
+                              </div>
                             </div>
                           )}
                           {form.keywords.length > 0 && (
@@ -808,7 +955,7 @@ export default function QuotePage() {
                       <div style={{ color: "#30B0B0", fontSize: "1.1rem", fontWeight: 700, letterSpacing: "3px" }}>QUOTATION</div>
                       <div style={{ color: "#888", fontSize: "0.7rem", marginTop: "0.4rem" }}>Ref: <span style={{ color: "#fff" }}>{quoteRef}</span></div>
                       <div style={{ color: "#888", fontSize: "0.7rem" }}>Date: <span style={{ color: "#fff" }}>{new Date().toLocaleDateString("en-ZA", { year: "numeric", month: "long", day: "numeric" })}</span></div>
-                      <div style={{ color: "#888", fontSize: "0.7rem" }}>Valid: <span style={{ color: "#fff" }}>30 days</span></div>
+                      <div style={{ color: "#888", fontSize: "0.7rem" }}>Valid: <span style={{ color: "#fff" }}>10 days</span></div>
                     </div>
                   </div>
 
@@ -864,7 +1011,7 @@ export default function QuotePage() {
                     )}
 
                     {/* Design Preferences */}
-                    {(form.lookFeel.length > 0 || form.themes.length > 0 || form.keywords.length > 0) && (
+                    {(form.lookFeel.length > 0 || form.themes.length > 0 || form.keywords.length > 0 || form.brandColors.length > 0) && (
                       <>
                         <QuoteSection title="Design Preferences" />
                         <div style={{ marginBottom: "1.75rem" }}>
@@ -884,6 +1031,27 @@ export default function QuotePage() {
                             <div style={{ marginBottom: "0.6rem" }}>
                               <span style={{ color: "#888", fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "1px", marginRight: "0.5rem" }}>Brand Vibe:</span>
                               {form.keywords.map(t => <QuoteChip key={t}>{t}</QuoteChip>)}
+                            </div>
+                          )}
+                          {form.brandColors.length > 0 && (
+                            <div style={{ marginBottom: "0.6rem", display: "flex", alignItems: "center", flexWrap: "wrap", gap: "0.5rem" }}>
+                              <span style={{ color: "#888", fontSize: "0.7rem", textTransform: "uppercase", letterSpacing: "1px", marginRight: "0.25rem" }}>Brand Colours:</span>
+                              {form.brandColors.length >= 2 && (
+                                <div style={{
+                                  width: "52px",
+                                  height: "22px",
+                                  borderRadius: "50px",
+                                  background: `linear-gradient(to right, ${form.brandColors[0]} 50%, ${form.brandColors[1]} 50%)`,
+                                  border: "1px solid #ddd",
+                                  flexShrink: 0,
+                                }} title={`${form.brandColors[0]} + ${form.brandColors[1]}`} />
+                              )}
+                              {form.brandColors.map(c => (
+                                <div key={c} style={{ display: "flex", alignItems: "center", gap: "4px" }}>
+                                  <div style={{ width: "18px", height: "18px", borderRadius: "50%", background: c, border: "1px solid #ddd", flexShrink: 0 }} />
+                                  <span style={{ fontSize: "0.68rem", color: "#555", fontFamily: "monospace" }}>{c}</span>
+                                </div>
+                              ))}
                             </div>
                           )}
                         </div>
@@ -944,7 +1112,6 @@ export default function QuotePage() {
                               {phases.map((ph, i) => (
                                 <tr key={i}>
                                   <td style={{ ...QTD, textAlign: "center", fontWeight: 700, color: "#30B0B0", fontSize: "0.85rem" }}>
-                                    <span style={{ fontSize: "0.6rem", fontWeight: 400, color: "#aaa", textTransform: "uppercase", letterSpacing: "1.5px", display: "block", lineHeight: 1 }}>Step</span>
                                     {i + 1}
                                   </td>
                                   <td style={QTD}>
